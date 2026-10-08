@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartMed | Medicines</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body data-page="medicines">
+    <div class="app-shell">
+      <aside id="sidebar" class="sidebar"></aside>
+      <div class="main-panel">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button id="sidebarToggle" class="btn"><i class="bi bi-list"></i></button>
+            <div class="topbar-title"><h2>Medicines</h2></div>
+          </div>
+          <div class="user-chip">
+            <div class="user-avatar" id="currentUserInitials">A</div>
+            <div>
+              <div id="currentUserName">Admin</div>
+              <small id="currentUserRole">ADMIN</small>
+            </div>
+          </div>
+        </header>
+
+        <main class="page-content">
+          <div class="page-header">
+            <div>
+              <h1>Medicine Management</h1>
+              <div class="section-subtitle">Add, edit, search and manage medicine records</div>
+            </div>
+          </div>
+
+          <div class="form-card mb-4">
+            <h5 id="medicineFormTitle">Add Medicine</h5>
+            <form id="medicineForm" novalidate>
+              <input type="hidden" id="medicineId" />
+              <div class="form-grid">
+                <div>
+                  <label class="form-label" for="medicineIdInput">Medicine ID</label>
+                  <input type="text" class="form-control" id="medicineIdInput" required />
+                </div>
+                <div>
+                  <label class="form-label" for="medicineName">Medicine Name</label>
+                  <input type="text" class="form-control" id="medicineName" required />
+                </div>
+                <div>
+                  <label class="form-label" for="medicineCategory">Category</label>
+                  <input type="text" class="form-control" id="medicineCategory" required />
+                </div>
+                <div>
+                  <label class="form-label" for="medicineManufacturer">Manufacturer</label>
+                  <input type="text" class="form-control" id="medicineManufacturer" required />
+                </div>
+                <div>
+                  <label class="form-label" for="medicineUnit">Unit</label>
+                  <input type="text" class="form-control" id="medicineUnit" required />
+                </div>
+                <div>
+                  <label class="form-label" for="medicineMinimumStock">Minimum Stock</label>
+                  <input type="number" class="form-control" id="medicineMinimumStock" min="0" required />
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="medicineDescription">Description</label>
+                  <textarea class="form-control" id="medicineDescription" rows="3"></textarea>
+                </div>
+              </div>
+              <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-primary">Save Medicine</button>
+                <button type="button" class="btn btn-outline-secondary" id="cancelMedicineEdit">Cancel</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card-panel section-card">
+            <div class="table-header">
+              <h5 class="mb-0">Medicines Inventory</h5>
+            </div>
+            <div class="p-3">
+              <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                  <label class="form-label" for="medicineSearch">Search</label>
+                  <input type="text" class="form-control" id="medicineSearch" placeholder="Search medicine name or ID" />
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label" for="medicineCategoryFilter">Category</label>
+                  <select class="form-select" id="medicineCategoryFilter">
+                    <option value="">All</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label" for="medicineManufacturerFilter">Manufacturer</label>
+                  <select class="form-select" id="medicineManufacturerFilter">
+                    <option value="">All</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label" for="medicineExpiryFilter">Expiry</label>
+                  <select class="form-select" id="medicineExpiryFilter">
+                    <option value="">All</option>
+                    <option value="SAFE">Safe</option>
+                    <option value="EXPIRING SOON">Expiring Soon</option>
+                    <option value="EXPIRED">Expired</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label" for="medicineStatusFilter">Stock</label>
+                  <select class="form-select" id="medicineStatusFilter">
+                    <option value="">All</option>
+                    <option value="LOW STOCK">Low Stock</option>
+                    <option value="OK">Healthy</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label" for="medicineSortBy">Sort By</label>
+                  <select class="form-select" id="medicineSortBy">
+                    <option value="name">Name</option>
+                    <option value="quantity">Quantity</option>
+                    <option value="expiry">Expiry</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Medicine ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Manufacturer</th>
+                    <th>Stock</th>
+                    <th>Min Stock</th>
+                    <th>Recommended Batch</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="medicineTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div class="modal fade" id="medicineDetailsModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Medicine Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="medicineDetailsBody"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/storage.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/medicines.js"></script>
+  </body>
+</html>

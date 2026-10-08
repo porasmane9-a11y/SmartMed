@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartMed</title>
+  </head>
+  <body>
+    <script>
+      const currentUser = sessionStorage.getItem('smartmed_current_user');
+      window.location.href = currentUser ? 'dashboard.html' : 'login.html';
+    </script>
+  </body>
+</html>
